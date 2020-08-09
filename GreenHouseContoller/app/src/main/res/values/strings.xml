@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">GreenHouseContoller</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="greenhouse_information">GreenHouse Information</string>
+    <string name="change_system_parameters">Change System Parameters</string>
+    <string name="turn_on_of">Turn On/Of</string>
+    <string name="temperature">Temperature:</string>
+    <string name="condition_system_on_off">Condition System On/Off:</string>
+    <string name="lighting_on_of">Lighting System On/Of</string>
+    <string name="irrigation_system_on_off">Irrigation System On/Off</string>
+    <string name="off">OFF</string>
+    <string name="on">ON</string>
+    <string name="temperature_txt">Temperature</string>
+    <string name="moisture_from">Moisture From:</string>
+    <string name="to">To:</string>
+    <string name="light_from">Light From:</string>
+    <string name="temperature_from">Temperature From:</string>
+</resources>

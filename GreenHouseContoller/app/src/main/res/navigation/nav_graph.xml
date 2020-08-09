@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/mainFragment">
+
+    <fragment
+        android:id="@+id/mainFragment"
+        android:name="com.nav.greenhousecontoller.Fragments.MainFragment"
+        android:label="fragment_main"
+        tools:layout="@layout/fragment_main" >
+        <action
+            android:id="@+id/action_mainFragment_to_viewGreenHouseFragment"
+            app:destination="@id/viewGreenHouseFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/viewGreenHouseFragment"
+        android:name="com.nav.greenhousecontoller.Fragments.ViewGreenHouseFragment"
+        android:label="fragment_view_green_house"
+        tools:layout="@layout/fragment_view_green_house" >
+        <action
+            android:id="@+id/action_viewGreenHouseFragment_to_viewGreenHouseChangeInformationFragment"
+            app:destination="@id/viewGreenHouseChangeInformationFragment" />
+        <action
+            android:id="@+id/action_viewGreenHouseFragment_to_viewGreenHouseInformationFragment"
+            app:destination="@id/viewGreenHouseInformationFragment" />
+        <action
+            android:id="@+id/action_viewGreenHouseFragment_to_viewChangeSystemInformationFragment"
+            app:destination="@id/viewChangeSystemInformationFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/viewChangeSystemInformationFragment"
+        android:name="com.nav.greenhousecontoller.Fragments.ViewChangeSystemInformationFragment"
+        android:label="fragment_view_change_system_information"
+        tools:layout="@layout/fragment_view_change_system_information" />
+    <fragment
+        android:id="@+id/viewGreenHouseInformationFragment"
+        android:name="com.nav.greenhousecontoller.Fragments.ViewGreenHouseInformationFragment"
+        android:label="fragment_view_green_house_information"
+        tools:layout="@layout/fragment_view_green_house_information" />
+    <fragment
+        android:id="@+id/viewGreenHouseChangeInformationFragment"
+        android:name="com.nav.greenhousecontoller.Fragments.ViewGreenHouseChangeInformationFragment"
+        android:label="fragment_view_green_house_change_information"
+        tools:layout="@layout/fragment_view_green_house_change_information" />
+</navigation>
