@@ -15,11 +15,11 @@ import lombok.Setter;
 public class GreenHouseLimits {
 
     private long id;
-    private BigDecimal downTemperatureLimit;
-    private BigDecimal upTemperatureLimit;
-    private BigDecimal downMoistureLimit;
-    private BigDecimal upMoistureLimit;
-    private BigDecimal downLightLimit;
-    private BigDecimal upLightLimit;
+    private int downTemperatureLimit;
+    private int upTemperatureLimit;
+    private int downMoistureLimit;
+    private int upMoistureLimit;
+    private int downLightLimit;
+    private int upLightLimit;
 
 }

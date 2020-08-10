@@ -16,7 +16,7 @@
 
         <Spinner
             android:id="@+id/down_moist_spinner"
-            android:layout_width="50dp"
+            android:layout_width="100dp"
             android:layout_height="30dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -29,7 +29,7 @@
         android:layout_width="130dp"
         android:layout_height="30dp"
         android:gravity="center_vertical"
-        android:text="@string/light_from"
+        android:text="@string/moisture_from"
         android:textAlignment="gravity"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -56,7 +56,7 @@
 
         <Spinner
             android:id="@+id/up_moist_spinner"
-            android:layout_width="50dp"
+            android:layout_width="100dp"
             android:layout_height="30dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
