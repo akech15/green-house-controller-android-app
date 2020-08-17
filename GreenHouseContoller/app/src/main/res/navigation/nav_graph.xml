@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_mainFragment_to_viewGreenHouseFragment"
             app:destination="@id/viewGreenHouseFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_registerFragment"
+            app:destination="@id/registerFragment" />
     </fragment>
     <fragment
         android:id="@+id/viewGreenHouseFragment"
@@ -44,4 +47,12 @@
         android:name="com.nav.greenhousecontoller.Fragments.ViewGreenHouseChangeInformationFragment"
         android:label="fragment_view_green_house_change_information"
         tools:layout="@layout/fragment_view_green_house_change_information" />
+    <fragment
+        android:id="@+id/registerFragment"
+        android:name="com.nav.greenhousecontoller.Fragments.RegisterFragment"
+        android:label="RegisterFragment" >
+        <action
+            android:id="@+id/action_registerFragment_to_mainFragment"
+            app:destination="@id/mainFragment" />
+    </fragment>
 </navigation>

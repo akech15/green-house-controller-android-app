@@ -1,7 +1,6 @@
 package com.nav.greenhousecontoller.integration.systemInf;
 
 
-import com.nav.greenhousecontoller.model.GreenHouse;
 import com.nav.greenhousecontoller.model.GreenHouseSystemInf;
 
 import retrofit2.Call;

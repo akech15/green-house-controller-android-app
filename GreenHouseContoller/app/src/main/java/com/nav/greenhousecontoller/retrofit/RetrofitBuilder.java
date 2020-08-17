@@ -4,6 +4,7 @@ package com.nav.greenhousecontoller.retrofit;
 import com.nav.greenhousecontoller.integration.greenHouse.GreenHouseService;
 import com.nav.greenhousecontoller.integration.greenHouseLimits.GreenHouseLimitsService;
 import com.nav.greenhousecontoller.integration.systemInf.GreenHouseSystemInfService;
+import com.nav.greenhousecontoller.integration.userService.UserService;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -36,5 +37,13 @@ public class RetrofitBuilder {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         return retrofit.create(GreenHouseSystemInfService.class);
+    }
+
+    public static UserService getUserService(@NotNull String url) {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(url)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        return retrofit.create(UserService.class);
     }
 }

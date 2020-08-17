@@ -9,46 +9,38 @@ import android.widget.TextView;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
+import com.google.android.material.button.MaterialButton;
 import com.nav.greenhousecontoller.R;
 
 
 public class ViewGreenHouseFragment extends Fragment {
-    private TextView greenHouseInfButton;
-    private TextView greenHouseChangeParamsButton;
-    private TextView greenHouseChangeSysParamsButton;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_view_green_house, container, false);
-        greenHouseInfButton = view.findViewById(R.id.greenhouse_inf_but);
-        greenHouseChangeParamsButton = view.findViewById(R.id.change_sys_params_but);
-        greenHouseChangeSysParamsButton = view.findViewById(R.id.system_inf_but);
-        long id = getArguments().getLong("id");
-        greenHouseInfButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Bundle bundle = new Bundle();
-                bundle.putLong("id", id);
-                Navigation.findNavController(view).navigate(R.id.action_viewGreenHouseFragment_to_viewGreenHouseInformationFragment, bundle);
-            }
+        MaterialButton greenHouseInfButton = view.findViewById(R.id.greenhouse_inf_but);
+        MaterialButton greenHouseChangeParamsButton = view.findViewById(R.id.change_sys_params_but);
+        MaterialButton greenHouseChangeSysParamsButton = view.findViewById(R.id.system_inf_but);
+
+        long id = requireArguments().getLong("id");
+
+        greenHouseInfButton.setOnClickListener(v -> {
+            Bundle bundle = new Bundle();
+            bundle.putLong("id", id);
+            Navigation.findNavController(view).navigate(R.id.action_viewGreenHouseFragment_to_viewGreenHouseInformationFragment, bundle);
         });
-        greenHouseChangeParamsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Bundle bundle = new Bundle();
-                bundle.putLong("id", id);
-                Navigation.findNavController(view).navigate(R.id.action_viewGreenHouseFragment_to_viewGreenHouseChangeInformationFragment, bundle);
-            }
+        greenHouseChangeParamsButton.setOnClickListener(v -> {
+            Bundle bundle = new Bundle();
+            bundle.putLong("id", id);
+            Navigation.findNavController(view).navigate(R.id.action_viewGreenHouseFragment_to_viewGreenHouseChangeInformationFragment, bundle);
         });
-        greenHouseChangeSysParamsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Bundle bundle = new Bundle();
-                bundle.putLong("id", id);
-                Navigation.findNavController(view).navigate(R.id.action_viewGreenHouseFragment_to_viewChangeSystemInformationFragment, bundle);
-            }
+        greenHouseChangeSysParamsButton.setOnClickListener(v -> {
+            Bundle bundle = new Bundle();
+            bundle.putLong("id", id);
+            Navigation.findNavController(view).navigate(R.id.action_viewGreenHouseFragment_to_viewChangeSystemInformationFragment, bundle);
         });
+
         return view;
     }
 }
