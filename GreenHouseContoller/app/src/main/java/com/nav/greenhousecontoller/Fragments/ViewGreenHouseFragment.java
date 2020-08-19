@@ -23,21 +23,21 @@ public class ViewGreenHouseFragment extends Fragment {
         MaterialButton greenHouseChangeParamsButton = view.findViewById(R.id.change_sys_params_but);
         MaterialButton greenHouseChangeSysParamsButton = view.findViewById(R.id.system_inf_but);
 
-        long id = requireArguments().getLong("id");
+        String id = requireArguments().getString("id");
 
         greenHouseInfButton.setOnClickListener(v -> {
             Bundle bundle = new Bundle();
-            bundle.putLong("id", id);
+            bundle.putString("id", id);
             Navigation.findNavController(view).navigate(R.id.action_viewGreenHouseFragment_to_viewGreenHouseInformationFragment, bundle);
         });
         greenHouseChangeParamsButton.setOnClickListener(v -> {
             Bundle bundle = new Bundle();
-            bundle.putLong("id", id);
+            bundle.putString("id", id);
             Navigation.findNavController(view).navigate(R.id.action_viewGreenHouseFragment_to_viewGreenHouseChangeInformationFragment, bundle);
         });
         greenHouseChangeSysParamsButton.setOnClickListener(v -> {
             Bundle bundle = new Bundle();
-            bundle.putLong("id", id);
+            bundle.putString("id", id);
             Navigation.findNavController(view).navigate(R.id.action_viewGreenHouseFragment_to_viewChangeSystemInformationFragment, bundle);
         });
 

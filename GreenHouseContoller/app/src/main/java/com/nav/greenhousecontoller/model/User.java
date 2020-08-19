@@ -13,7 +13,9 @@ import lombok.Setter;
 @Builder
 
 public class User {
-    private long id;
+
+    private String greenHouseId;
     private String userName;
     private String password;
+
 }

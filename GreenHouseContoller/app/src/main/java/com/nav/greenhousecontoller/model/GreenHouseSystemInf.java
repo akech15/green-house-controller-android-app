@@ -12,7 +12,6 @@ import lombok.Setter;
 
 public class GreenHouseSystemInf {
 
-    private long id;
     private int lightOn;
     private int conditioningOn;
     private int irrigationSystemOn;

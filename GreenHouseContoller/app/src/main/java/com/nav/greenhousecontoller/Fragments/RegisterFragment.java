@@ -68,45 +68,43 @@ public class RegisterFragment extends Fragment {
                 return;
             }
             User user = getUser(getUserNameFromText, getPasswordFromText, getGreenHouseId);
-            checkIfIdExists(Long.parseLong(getGreenHouseId));
-            if (greenHouseIdExists) {
-                addUser(user, view);
-            } else {
-                Toast toast = Toast.makeText(getContext(), "Incorrect GreenHouse Id", Toast.LENGTH_LONG);
-                toast.show();
-            }
+            checkIfIdExists(getGreenHouseId, user, view);
+
         });
 
         return view;
     }
 
-    private void checkIfIdExists(long id) {
+    private void checkIfIdExists(String getGreenHouseId, User user, View view) {
         GreenHouseService greenHouseService = RetrofitBuilder.getGreenHouseService(GreenHouseServerParams.URL);
-        greenHouseService.getGreenHouse(id).enqueue(new Callback<GreenHouse>() {
+        greenHouseService.getGreenHouse(getGreenHouseId).enqueue(new Callback<GreenHouse>() {
             @Override
             public void onResponse(Call<GreenHouse> call, Response<GreenHouse> response) {
                 if (response.isSuccessful()) {
-                    GreenHouse greenHouse = response.body();
-                    greenHouseIdExists = greenHouse != null;
+                    addUser(getGreenHouseId, user, view);
                 }
             }
 
             @Override
             public void onFailure(Call<GreenHouse> call, Throwable t) {
-                greenHouseIdExists = false;
+                Toast toast = Toast.makeText(getContext(), "GreenHouse Id doesn't exists", Toast.LENGTH_LONG);
+                toast.show();
             }
         });
     }
 
-    private void addUser(User user, View view) {
+    private void addUser(String getGreenHouseId, User user, View view) {
         UserService userService = RetrofitBuilder.getUserService(GreenHouseServerParams.URL);
-        userService.addUser(user).enqueue(new Callback<GreenHouseResponse>() {
+        userService.addUser(getGreenHouseId, user).enqueue(new Callback<GreenHouseResponse>() {
             @Override
             public void onResponse(Call<GreenHouseResponse> call, Response<GreenHouseResponse> response) {
                 if (response.isSuccessful()) {
                     GreenHouseResponse greenHouseResponse = response.body();
-                    if (greenHouseResponse != null) {
+                    if (greenHouseResponse.isUserAdded()) {
                         Navigation.findNavController(view).navigate(R.id.action_registerFragment_to_mainFragment);
+                    } else {
+                        Toast toast = Toast.makeText(getContext(), "UserName Already exists", Toast.LENGTH_LONG);
+                        toast.show();
                     }
                 }
             }
@@ -120,7 +118,7 @@ public class RegisterFragment extends Fragment {
 
     private User getUser(String getUserNameFromText, String getPasswordFromText, String getGreenHouseId) {
         User user = new User();
-        user.setId(Long.parseLong(getGreenHouseId));
+        user.setGreenHouseId(getGreenHouseId);
         user.setPassword(getPasswordFromText);
         user.setUserName(getUserNameFromText);
         return user;

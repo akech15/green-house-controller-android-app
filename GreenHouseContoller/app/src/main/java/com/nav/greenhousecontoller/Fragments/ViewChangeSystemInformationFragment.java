@@ -30,7 +30,8 @@ public class ViewChangeSystemInformationFragment extends Fragment {
     private Switch conditionSwitch;
     private Switch lightSwitch;
     private Switch irrigationSwitch;
-    private GreenHouseSystemInf greenHouseSystemInf = new GreenHouseSystemInf(-1, 1, 1, 1);
+    private String id;
+    private GreenHouseSystemInf greenHouseSystemInf = new GreenHouseSystemInf(1, 1, 1);
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -45,12 +46,12 @@ public class ViewChangeSystemInformationFragment extends Fragment {
             boolean light = pref.getBoolean("light", true);
             boolean irr = pref.getBoolean("irr", true);
             returnConditioningState(condition);
-            returnLight(light);
+            returnLightState(light);
             returnIrrState(irr);
         }
-        Long id = getArguments().getLong("id");
-        greenHouseSystemInf.setId(id);
-        updateSystemInformation(greenHouseSystemInf);
+        assert getArguments() != null;
+        id = getArguments().getString("id");
+        updateSystemInformation(id, greenHouseSystemInf);
         return view;
     }
 
@@ -63,7 +64,7 @@ public class ViewChangeSystemInformationFragment extends Fragment {
         irrigationSwitch.setChecked(irr);
     }
 
-    private void returnLight(boolean light) {
+    private void returnLightState(boolean light) {
         if (light) {
             greenHouseSystemInf.setLightOn(SYSTEM_ON);
         } else {
@@ -107,7 +108,7 @@ public class ViewChangeSystemInformationFragment extends Fragment {
                     greenHouseSystemInf.setIrrigationSystemOn(SYSTEM_OFF);
                 }
                 saveState("irr", isChecked);
-                updateSystemInformation(greenHouseSystemInf);
+                updateSystemInformation(id, greenHouseSystemInf);
             }
         });
     }
@@ -122,7 +123,7 @@ public class ViewChangeSystemInformationFragment extends Fragment {
                     greenHouseSystemInf.setLightOn(SYSTEM_OFF);
                 }
                 saveState("light", isChecked);
-                updateSystemInformation(greenHouseSystemInf);
+                updateSystemInformation(id, greenHouseSystemInf);
             }
         });
     }
@@ -137,14 +138,14 @@ public class ViewChangeSystemInformationFragment extends Fragment {
                     greenHouseSystemInf.setConditioningOn(SYSTEM_OFF);
                 }
                 saveState("cond", isChecked);
-                updateSystemInformation(greenHouseSystemInf);
+                updateSystemInformation(id, greenHouseSystemInf);
             }
         });
     }
 
-    private void updateSystemInformation(GreenHouseSystemInf greenHouseSystemInf) {
+    private void updateSystemInformation(String id, GreenHouseSystemInf greenHouseSystemInf) {
         GreenHouseSystemInfService greenHouseSystemInfService = RetrofitBuilder.getGreenHouseSystemInfService(GreenHouseServerParams.URL);
-        greenHouseSystemInfService.updateSystemInf(greenHouseSystemInf).enqueue(new Callback<GreenHouseSystemInf>() {
+        greenHouseSystemInfService.updateSystemInf(id, greenHouseSystemInf).enqueue(new Callback<GreenHouseSystemInf>() {
             @Override
             public void onResponse(Call<GreenHouseSystemInf> call, Response<GreenHouseSystemInf> response) {
 

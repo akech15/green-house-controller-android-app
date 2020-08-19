@@ -27,13 +27,13 @@ public class ViewGreenHouseInformationFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_view_green_house_information, container, false);
-        long id = getArguments().getLong("id");
+        String id = getArguments().getString("id");
         textView = view.findViewById(R.id.green_house_inf_text);
         downloadInformation(id);
         return view;
     }
 
-    private void downloadInformation(long id) {
+    private void downloadInformation(String id) {
         GreenHouseService greenHouseService = RetrofitBuilder.getGreenHouseService(GreenHouseServerParams.URL);
         greenHouseService.getGreenHouse(id).enqueue(new Callback<GreenHouse>() {
             @Override

@@ -70,7 +70,7 @@ public class MainFragment extends Fragment {
                     if (user != null) {
                         if (user.getPassword().equals(getPassFromText)) {
                             Bundle bundle = new Bundle();
-                            bundle.putLong("id", user.getId());
+                            bundle.putString("id", user.getGreenHouseId());
                             Navigation.findNavController(view).navigate(R.id.action_mainFragment_to_viewGreenHouseFragment, bundle);
                         } else {
                             Toast toast = Toast.makeText(getContext(), "Incorrect Password", Toast.LENGTH_LONG);
@@ -86,7 +86,7 @@ public class MainFragment extends Fragment {
 
             @Override
             public void onFailure(Call<User> call, Throwable t) {
-                Toast toast = Toast.makeText(getContext(), "User or Password is Incorrect", Toast.LENGTH_LONG);
+                Toast toast = Toast.makeText(getContext(), "Can't Connect To Server", Toast.LENGTH_LONG);
                 toast.show();
             }
         });

@@ -12,8 +12,8 @@ import retrofit2.http.Path;
 
 
 public interface UserService {
-    @PUT("userInf")
-    Call<GreenHouseResponse> addUser(@Body User user);
+    @PUT("userInf/{greenHouseId}")
+    Call<GreenHouseResponse> addUser(@Path("greenHouseId") String greenHouseId, @Body User user);
 
     @GET("get-user/{userName}")
     Call<User> getUser(@Path("userName") String userName);

@@ -1,7 +1,6 @@
 package com.nav.greenhousecontoller.model;
 
 
-import java.math.BigDecimal;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,7 +13,6 @@ import lombok.Setter;
 @NoArgsConstructor
 public class GreenHouseLimits {
 
-    private long id;
     private int downTemperatureLimit;
     private int upTemperatureLimit;
     private int downMoistureLimit;

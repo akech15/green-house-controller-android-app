@@ -8,5 +8,5 @@ import retrofit2.http.Path;
 
 public interface GreenHouseService {
     @GET("get-green-house/{greenHouseId}")
-    Call<GreenHouse> getGreenHouse(@Path("greenHouseId") long greenHouseId);
+    Call<GreenHouse> getGreenHouse(@Path("greenHouseId") String greenHouseId);
 }

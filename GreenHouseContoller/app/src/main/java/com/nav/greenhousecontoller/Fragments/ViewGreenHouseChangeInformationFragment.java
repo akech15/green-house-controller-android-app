@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -14,14 +15,17 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 
-import com.nav.greenhousecontoller.GreenhouseInterval;
+import com.nav.greenhousecontoller.utils.GreenhouseInterval;
 import com.nav.greenhousecontoller.R;
-import com.nav.greenhousecontoller.SpinnerHelper;
+import com.nav.greenhousecontoller.utils.SpinnerHelper;
 import com.nav.greenhousecontoller.integration.GreenHouseServerParams;
 import com.nav.greenhousecontoller.integration.greenHouseLimits.GreenHouseLimitsService;
 import com.nav.greenhousecontoller.model.GreenHouseLimits;
 import com.nav.greenhousecontoller.retrofit.RetrofitBuilder;
+
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -34,20 +38,20 @@ public class ViewGreenHouseChangeInformationFragment extends Fragment implements
     private Spinner upMoistSpinner;
     private Spinner downLightSpinner;
     private Spinner upLightSpinner;
-    private GreenHouseLimits greenHouseLimits = new GreenHouseLimits(-1, 22, 25, 400, 800, 500, 900);
+    private GreenHouseLimits greenHouseLimits = new GreenHouseLimits(22, 25, 400, 800, 500, 900);
+    private String greenHouseId;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_view_green_house_change_information, container, false);
-        long id = getArguments().getLong("id");
+        greenHouseId = getArguments().getString("id");
         getTempSpinners(view);
         getLightSpinners(view);
         getMoistSpinners(view);
         organizeSpinners();
         returnPreviousState();
-        greenHouseLimits.setId(id);
-        updateChangerInformationForGreenHouse(greenHouseLimits);
+        updateChangerInformationForGreenHouse(greenHouseId, greenHouseLimits);
         return view;
     }
 
@@ -66,7 +70,6 @@ public class ViewGreenHouseChangeInformationFragment extends Fragment implements
             upMoistSpinner.setSelection(upMoistPos);
             int downMoistPos = sharedPreferences.getInt("downMoist", 0);
             downMoistSpinner.setSelection(downMoistPos);
-
         }
     }
 
@@ -90,7 +93,7 @@ public class ViewGreenHouseChangeInformationFragment extends Fragment implements
                 }
                 greenHouseLimits.setDownMoistureLimit(value);
                 saveState("downMoist", position);
-                updateChangerInformationForGreenHouse(greenHouseLimits);
+                updateChangerInformationForGreenHouse(greenHouseId, greenHouseLimits);
             }
 
             @Override
@@ -109,7 +112,7 @@ public class ViewGreenHouseChangeInformationFragment extends Fragment implements
                 }
                 greenHouseLimits.setUpMoistureLimit(value);
                 saveState("upMoist", position);
-                updateChangerInformationForGreenHouse(greenHouseLimits);
+                updateChangerInformationForGreenHouse(greenHouseId, greenHouseLimits);
             }
 
             @Override
@@ -131,7 +134,7 @@ public class ViewGreenHouseChangeInformationFragment extends Fragment implements
                 }
                 greenHouseLimits.setDownLightLimit(value);
                 saveState("downLight", position);
-                updateChangerInformationForGreenHouse(greenHouseLimits);
+                updateChangerInformationForGreenHouse(greenHouseId, greenHouseLimits);
             }
 
             @Override
@@ -150,7 +153,7 @@ public class ViewGreenHouseChangeInformationFragment extends Fragment implements
                 }
                 greenHouseLimits.setUpLightLimit(value);
                 saveState("upLight", position);
-                updateChangerInformationForGreenHouse(greenHouseLimits);
+                updateChangerInformationForGreenHouse(greenHouseId, greenHouseLimits);
 
             }
 
@@ -166,14 +169,14 @@ public class ViewGreenHouseChangeInformationFragment extends Fragment implements
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 int value = (int) parent.getItemAtPosition(position);
-                if (value > greenHouseLimits.getUpTemperatureLimit()) {
+                if (greenHouseLimits.getUpTemperatureLimit() == 0 && value > greenHouseLimits.getUpTemperatureLimit()) {
                     Toast toast = Toast.makeText(getContext(), "Down Temperature limit Can't be Bigger Then up light Temperature", Toast.LENGTH_LONG);
                     toast.show();
                     return;
                 }
                 greenHouseLimits.setDownTemperatureLimit(value);
                 saveState("downTemp", position);
-                updateChangerInformationForGreenHouse(greenHouseLimits);
+                updateChangerInformationForGreenHouse(greenHouseId, greenHouseLimits);
             }
 
             @Override
@@ -192,7 +195,7 @@ public class ViewGreenHouseChangeInformationFragment extends Fragment implements
                 }
                 greenHouseLimits.setUpTemperatureLimit(value);
                 saveState("upTemp", position);
-                updateChangerInformationForGreenHouse(greenHouseLimits);
+                updateChangerInformationForGreenHouse(greenHouseId, greenHouseLimits);
             }
 
             @Override
@@ -203,14 +206,13 @@ public class ViewGreenHouseChangeInformationFragment extends Fragment implements
     }
 
     private void organizeSpinners() {
-        SpinnerHelper.setTempIntervalToSpinner(getActivity(), upTempSpinner, downTempSpinner, SpinnerHelper.getTemperatureInterval(),
+        SpinnerHelper.setTempIntervalToSpinner(getActivity(), upTempSpinner, downTempSpinner, SpinnerHelper.getTempInterval(),
                 GreenhouseInterval.DOWN_TEMP_LIMIT, GreenhouseInterval.UP_TEMP_LIMIT);
-        SpinnerHelper.setLightIntervalToSpinner(getActivity(), upLightSpinner, downLightSpinner, SpinnerHelper.getLightInterval(),
+        SpinnerHelper.setLightIntervalToSpinner(getActivity(), upLightSpinner, downLightSpinner, SpinnerHelper.getPercentageInterval(),
                 GreenhouseInterval.DOWN_LIGHT_LIMIT, GreenhouseInterval.UP_LIGHT_LIMIT);
-        SpinnerHelper.setMoistIntervalToSpinner(getActivity(), upMoistSpinner, downMoistSpinner, SpinnerHelper.getMoistureInterval(),
+        SpinnerHelper.setMoistIntervalToSpinner(getActivity(), upMoistSpinner, downMoistSpinner, SpinnerHelper.getPercentageInterval(),
                 GreenhouseInterval.DOWN_MOIST_LIMIT, GreenhouseInterval.UP_MOIST_LIMIT);
     }
-
 
     private void getMoistSpinners(View view) {
         ConstraintLayout constraintLayout = view.findViewById(R.id.main_fragment_id);
@@ -249,9 +251,9 @@ public class ViewGreenHouseChangeInformationFragment extends Fragment implements
         edt.commit();
     }
 
-    private void updateChangerInformationForGreenHouse(GreenHouseLimits greenHouseLimits) {
+    private void updateChangerInformationForGreenHouse(String greenHouseId, GreenHouseLimits greenHouseLimits) {
         GreenHouseLimitsService greenHouseLimitsService = RetrofitBuilder.getGreenHouseLimitsService(GreenHouseServerParams.URL);
-        greenHouseLimitsService.updateGreenHouseLimits(greenHouseLimits).enqueue(new Callback<GreenHouseLimits>() {
+        greenHouseLimitsService.updateGreenHouseLimits(greenHouseId, greenHouseLimits).enqueue(new Callback<GreenHouseLimits>() {
             @Override
             public void onResponse(Call<GreenHouseLimits> call, Response<GreenHouseLimits> response) {
 
@@ -266,7 +268,6 @@ public class ViewGreenHouseChangeInformationFragment extends Fragment implements
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
     }
 
     @Override
