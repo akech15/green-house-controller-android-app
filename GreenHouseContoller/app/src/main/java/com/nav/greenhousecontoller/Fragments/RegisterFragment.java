@@ -30,7 +30,6 @@ public class RegisterFragment extends Fragment {
     private EditText password;
     private EditText repeatPassword;
     private Button button;
-    private boolean greenHouseIdExists = false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -65,6 +64,11 @@ public class RegisterFragment extends Fragment {
                 toast.show();
                 return;
             }
+            if (!getPasswordFromText.equals(getRepeatedPassword)) {
+                Toast toast = Toast.makeText(getContext(), "Incorrect Repeated Password", Toast.LENGTH_LONG);
+                toast.show();
+                return;
+            }
             User user = getUser(getUserNameFromText, getPasswordFromText, getGreenHouseId);
             addUser(getGreenHouseId, user, view);
         });
@@ -83,7 +87,7 @@ public class RegisterFragment extends Fragment {
                     if (greenHouseResponse.isUserAdded()) {
                         Navigation.findNavController(view).navigate(R.id.action_registerFragment_to_mainFragment);
                     } else {
-                        Toast toast = Toast.makeText(getContext(), "UserName Already exists or incorrect Password", Toast.LENGTH_LONG);
+                        Toast toast = Toast.makeText(getContext(), "UserName Already exists or incorrect GreenHouseId", Toast.LENGTH_LONG);
                         toast.show();
                     }
                 }
