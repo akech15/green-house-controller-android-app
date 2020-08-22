@@ -14,9 +14,7 @@ import androidx.navigation.Navigation;
 
 import com.nav.greenhousecontoller.R;
 import com.nav.greenhousecontoller.integration.GreenHouseServerParams;
-import com.nav.greenhousecontoller.integration.greenHouse.GreenHouseService;
 import com.nav.greenhousecontoller.integration.userService.UserService;
-import com.nav.greenhousecontoller.model.GreenHouse;
 import com.nav.greenhousecontoller.model.GreenHouseResponse;
 import com.nav.greenhousecontoller.model.User;
 import com.nav.greenhousecontoller.retrofit.RetrofitBuilder;
@@ -68,30 +66,12 @@ public class RegisterFragment extends Fragment {
                 return;
             }
             User user = getUser(getUserNameFromText, getPasswordFromText, getGreenHouseId);
-            checkIfIdExists(getGreenHouseId, user, view);
-
+            addUser(getGreenHouseId, user, view);
         });
 
         return view;
     }
 
-    private void checkIfIdExists(String getGreenHouseId, User user, View view) {
-        GreenHouseService greenHouseService = RetrofitBuilder.getGreenHouseService(GreenHouseServerParams.URL);
-        greenHouseService.getGreenHouse(getGreenHouseId).enqueue(new Callback<GreenHouse>() {
-            @Override
-            public void onResponse(Call<GreenHouse> call, Response<GreenHouse> response) {
-                if (response.isSuccessful()) {
-                    addUser(getGreenHouseId, user, view);
-                }
-            }
-
-            @Override
-            public void onFailure(Call<GreenHouse> call, Throwable t) {
-                Toast toast = Toast.makeText(getContext(), "GreenHouse Id doesn't exists", Toast.LENGTH_LONG);
-                toast.show();
-            }
-        });
-    }
 
     private void addUser(String getGreenHouseId, User user, View view) {
         UserService userService = RetrofitBuilder.getUserService(GreenHouseServerParams.URL);
@@ -103,7 +83,7 @@ public class RegisterFragment extends Fragment {
                     if (greenHouseResponse.isUserAdded()) {
                         Navigation.findNavController(view).navigate(R.id.action_registerFragment_to_mainFragment);
                     } else {
-                        Toast toast = Toast.makeText(getContext(), "UserName Already exists", Toast.LENGTH_LONG);
+                        Toast toast = Toast.makeText(getContext(), "UserName Already exists or incorrect Password", Toast.LENGTH_LONG);
                         toast.show();
                     }
                 }

@@ -62,22 +62,17 @@ public class MainFragment extends Fragment {
 
     private void navigateOnNextPage(String getUserFromText, String getPassFromText, View view) {
         UserService userService = RetrofitBuilder.getUserService(GreenHouseServerParams.URL);
-        userService.getUser(getUserFromText).enqueue(new Callback<User>() {
+        userService.getUser(getUserFromText, getPassFromText).enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
                 if (response.isSuccessful()) {
                     User user = response.body();
                     if (user != null) {
-                        if (user.getPassword().equals(getPassFromText)) {
-                            Bundle bundle = new Bundle();
-                            bundle.putString("id", user.getGreenHouseId());
-                            Navigation.findNavController(view).navigate(R.id.action_mainFragment_to_viewGreenHouseFragment, bundle);
-                        } else {
-                            Toast toast = Toast.makeText(getContext(), "Incorrect Password", Toast.LENGTH_LONG);
-                            toast.show();
-                        }
+                        Bundle bundle = new Bundle();
+                        bundle.putString("id", user.getGreenHouseId());
+                        Navigation.findNavController(view).navigate(R.id.action_mainFragment_to_viewGreenHouseFragment, bundle);
                     } else {
-                        Toast toast = Toast.makeText(getContext(), "User Doesn't Exists", Toast.LENGTH_LONG);
+                        Toast toast = Toast.makeText(getContext(), "Incorrect User or Password", Toast.LENGTH_LONG);
                         toast.show();
                     }
                 }
