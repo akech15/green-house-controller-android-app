@@ -65,7 +65,7 @@ public class RegisterFragment extends Fragment {
                 return;
             }
             if (!getPasswordFromText.equals(getRepeatedPassword)) {
-                Toast toast = Toast.makeText(getContext(), "Incorrect Repeated Password", Toast.LENGTH_LONG);
+                Toast toast = Toast.makeText(getContext(), "Passwords doesn't match", Toast.LENGTH_LONG);
                 toast.show();
                 return;
             }
@@ -84,10 +84,17 @@ public class RegisterFragment extends Fragment {
             public void onResponse(Call<GreenHouseResponse> call, Response<GreenHouseResponse> response) {
                 if (response.isSuccessful()) {
                     GreenHouseResponse greenHouseResponse = response.body();
-                    if (greenHouseResponse.isUserAdded()) {
+                    assert greenHouseResponse != null;
+                    if (!greenHouseResponse.isUserAdded() && !greenHouseResponse.isGreenHouseIdInUse() && !greenHouseResponse.isUserAlreadyExists()) {
+                        Toast toast = Toast.makeText(getContext(), "GreenHouseId doesn't exists", Toast.LENGTH_LONG);
+                        toast.show();
+                    } else if (greenHouseResponse.isUserAdded()) {
                         Navigation.findNavController(view).navigate(R.id.action_registerFragment_to_mainFragment);
-                    } else {
-                        Toast toast = Toast.makeText(getContext(), "UserName Already exists or incorrect GreenHouseId", Toast.LENGTH_LONG);
+                    } else if (greenHouseResponse.isGreenHouseIdInUse()){
+                        Toast toast = Toast.makeText(getContext(), "user with this GreenHouseId already exists", Toast.LENGTH_LONG);
+                        toast.show();
+                    } else if (greenHouseResponse.isUserAlreadyExists()){
+                        Toast toast = Toast.makeText(getContext(), "user already exists", Toast.LENGTH_LONG);
                         toast.show();
                     }
                 }

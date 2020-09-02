@@ -13,5 +13,7 @@ import lombok.Setter;
 @Builder
 
 public class GreenHouseResponse {
-    private boolean isUserAdded;
+    private boolean userAdded;
+    private boolean userAlreadyExists;
+    private boolean greenHouseIdInUse;
 }

@@ -15,7 +15,7 @@ public interface UserService {
     @PUT("userInf/{greenHouseId}")
     Call<GreenHouseResponse> addUser(@Path("greenHouseId") String greenHouseId, @Body User user);
 
-    @GET("get-user/{userName}/{password})")
+    @GET("get-user/{userName}/{password}")
     Call<User> getUser(@Path("userName") String userName, @Path("password") String password);
 
 }
